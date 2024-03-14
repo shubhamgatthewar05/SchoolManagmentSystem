@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Data</title>
+    <style>
+        /* Styles for the search bar */
+        .search-container {
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .search-container input[type=text] {
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 50%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .search-container input[type=submit] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-container input[type=submit]:hover {
+            background-color: #0056b3;
+        }
+
+        /* Styles for the table */
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Library Data</h1>
+    <div class="search-container">
+        <form id="searchForm">
+            <input type="text" id="searchInput" placeholder="Search by ID or Name" name="search_query">
+            <input type="submit" value="Search">
+        </form>
+    </div>
+    <table id="libraryTable">
+        <thead>
+            <tr>
+                <th>Book</th>
+                <th>Student Name</th>
+                <th>Library ID</th>
+                <th>Date</th>
+                <th>Return Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in library %}
+            <tr>
+                <td>{{ data.book }}</td>
+                <td>{{ data.studentName }}</td>
+                <td>{{ data.libraryId }}</td>
+                <td>{{ data.date }}</td>
+                <td>{{ data.returnDate }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
+        const libraryTable = document.getElementById('libraryTable').getElementsByTagName('tbody')[0];
+        const tableRows = libraryTable.getElementsByTagName('tr');
+
+        searchForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const searchTerm = searchInput.value.toLowerCase();
+
+            for (let i = 0; i < tableRows.length; i++) {
+                const rowData = tableRows[i].getElementsByTagName('td');
+                let found = false;
+
+                for (let j = 0; j < rowData.length; j++) {
+                    const cellData = rowData[j].textContent.toLowerCase();
+                    if (cellData.includes(searchTerm)) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (found) {
+                    tableRows[i].style.display = '';
+                } else {
+                    tableRows[i].style.display = 'none';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
